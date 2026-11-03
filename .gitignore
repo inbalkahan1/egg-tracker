@@ -1,0 +1,21 @@
+# Dependencies and caches
+node_modules/
+__pycache__/
+*.pyc
+
+# Data, results and videos (kept on the SSD, not in git)
+projects/
+results/
+validation/
+angle_collection/
+*.avi
+*.mp4
+*.xlsx
+*.png
+*.pdf
+*.log
+*.tmp
+*.tmp.csv
+
+# Editor settings
+.vscode/
