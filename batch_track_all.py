@@ -102,7 +102,7 @@ def run(video,out,limit=None):
   if frame_idx%25==0 or frame_idx==nrun-1:
    manifest.update(frames_processed=frame_idx+1,elapsed_s=round(time.time()-started,1),candidate_tracks=nextid-1,records=len(records))
    atomic_json(out/'run_status.json',manifest)
-   print(json.dumps(manifest|{'video':str(video),'limitations':None}),flush=True)
+   print(json.dumps({**manifest,'video':str(video),'limitations':None}),flush=True)
   if frame_idx%1000==0:atomic_json(out/'session.checkpoint.json',dict(video=identity,last_frame=frame_idx,records=records,automatic_batch=True))
  cap.release()
  summary=export(out,records,identity,0)
