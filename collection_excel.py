@@ -1,10 +1,12 @@
 """Spreadsheet export for the egg collection. Bundled artifact runtime unavailable; openpyxl fallback."""
-from pathlib import Path
+from pathlib import Path,PureWindowsPath
 import json,sys,math
 from openpyxl import Workbook
 from openpyxl.styles import Font,PatternFill,Alignment
 from openpyxl.chart import BarChart,Reference
 from openpyxl.worksheet.table import Table,TableStyleInfo
+def uri(path):
+    return Path(path).as_uri() if Path(path).is_absolute() else PureWindowsPath(path).as_uri()
 def export(folder):
     folder=Path(folder);d=json.loads((folder/'collection.json').read_text());samples=d['samples']
     wb=Workbook();summary=wb.active;summary.title='Summary';sh=wb.create_sheet('Egg samples')
@@ -13,7 +15,7 @@ def export(folder):
     for s in samples:
         sh.append([s['sample_id'],s['video'],s['egg_id'],s['frame'],s['frame']/s['fps'],*s['egg'],*s['oil'],s['angle_deg'],s['status'],s['focus'],'yes' if s['identity_confirmed'] else 'no','no' if s['excluded'] else 'yes',s['eligible_frames'],*s['gravity'],s['project'],s['raw_image'],s['annotated_image'],s['exclusion_reason']])
         for col,key in [(21,'raw_image'),(22,'annotated_image')]:
-            sh.cell(sh.max_row,col).hyperlink=Path(s[key]).as_uri();sh.cell(sh.max_row,col).style='Hyperlink'
+            sh.cell(sh.max_row,col).hyperlink=uri(s[key]);sh.cell(sh.max_row,col).style='Hyperlink'
     if samples:
         for row in sh.iter_rows(min_row=2):
             if row[0].row%2==0:
