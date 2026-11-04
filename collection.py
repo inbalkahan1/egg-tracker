@@ -10,6 +10,7 @@ from PIL import Image,ImageTk
 ROOT=Path(__file__).resolve().parent
 DEFAULT=ROOT/'angle_collection'
 BUNDLED=Path.home()/'.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'
+if not BUNDLED.exists():BUNDLED=Path(sys.executable)
 def atomic(path,data):
     temp=path.with_suffix('.tmp')
     temp.write_text(json.dumps(data,indent=2),encoding='utf-8');os.replace(temp,path)
